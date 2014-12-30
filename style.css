@@ -1,0 +1,9 @@
+html {
+	background-color: #C0C0C0
+	color: white;
+	font-family: Verdana, "Times New Roman", Serif;
+}
+.gameblock {
+	margin: 100px auto 0px auto;
+	width: 450px;
+}
