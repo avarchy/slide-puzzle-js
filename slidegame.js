@@ -1,5 +1,6 @@
 $(document).ready(function(){
+	alert("I guess jquery is working.")
   $(".block").click(function(){
-    $(this).hide();
+    alert("click worked");
   });
 });
