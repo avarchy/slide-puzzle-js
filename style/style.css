@@ -45,14 +45,41 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-/*end of reset css */
+/* end of reset css */
+
+/* begin of regular stuff */
+
 html {
-	background-color: #C0C0C0
+	background-color: #C0C0C0;
 	color: white;
 	font-family: Verdana, "Times New Roman", Serif;
 }
-.gameblock {
+
+#gamespace {
 	margin: 100px auto 0px auto;
 	width: 450px;
-	background-color: white;
+	background-color: black;
+}
+
+.block {
+	display: block;
+	float: left;
+	position: relative;width: 84px;
+	height: 84px;
+	background-color: #0e1725;
+	margin-right: 2px;
+	margin-bottom: 2px;
+	color: #0e1725;
+	font-size: 65px;
+	text-align: center;
+	line-height: 84px;
+	transition: background-color 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+	-o-transition: background-color 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+	-moz-transition: background-color 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+	-webkit-transition: background-color 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+	-ms-transition: background-color 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
+}
+.block:hover {
+  cursor: pointer;
+  background-color: white;
 }
