@@ -69,7 +69,8 @@ html {
 	background-color: #0e1725;
 	margin-right: 2px;
 	margin-bottom: 2px;
-	color: #0e1725;
+	color: #00CC00;
+	text-shadow: 0 0 10px rgba(0,255,0,1) , 0 0 20px rgba(0,255,0,1) ;
 	font-size: 65px;
 	text-align: center;
 	line-height: 84px;
