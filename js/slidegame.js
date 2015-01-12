@@ -4,7 +4,7 @@ var x;
 var blankpos = N*N-1;//pos in grid of the blank
 /*set up grid with N*N being the blank space  \
 grid = [1, 2, 3, 4, 5,
-				6, 7, 8, 9, 10,
+		6, 7, 8, 9, 10,
 				11, 12, 13, 14, 15,
 				16, 17, 18, 19, 20,
 				21, 22, 23, 24, 25]
@@ -86,37 +86,28 @@ function listBlankNeighbors() {
 function makeRandomMove() {
 	var possMoves = listBlankNeighbors();
 	var randMove = possMoves[Math.floor(Math.random()*possMoves.length)];
-	var divToMove = $("#" + "b" + (blankpos+randMove).toString());
-
+	var divToMove = $("#" + "b" + (blankpos+1+randMove).toString());
+	alert("going from " + (blankpos+1).toString() + " to " +(blankpos+1+randMove).toString());
 	if(randMove == 1) {
-		divToMove.animate({left:'+=86px'},250);
-		grid[blankpos]=grid[blankpos+randMove];
-		grid[blankpos+randMove]=N*N;
-		blankpos = blankpos+randMove;
+		divToMove.animate({left:'-=86px'},250);
 	}
 	else if(randMove == -N) {
-		divToMove.animate({top:'-=86px'},250);
-  		grid[blankpos]=grid[blankpos+randMove];
-		grid[blankpos+randMove]=N*N;
-		blankpos = blankpos+randMove;
+		divToMove.animate({top:'+=86px'},250);
 	}
 	else if(randMove == -1) {
-		divToMove.animate({left:'-=86px'},250);
-  		grid[blankpos]=grid[blankpos+randMove];
-		grid[blankpos+randMove]=N*N;
-		blankpos = blankpos+randMove;
+		divToMove.animate({left:'+=86px'},250);
 	}
 	else if(randMove == N) {
-		divToMove.animate({top:'+=86px'},250);
-  		grid[blankpos]=grid[blankpos+randMove];
-		grid[blankpos+randMove]=N*N;
-		blankpos = blankpos+randMove;
+		divToMove.animate({top:'-=86px'},250);
 	}
+	grid[blankpos]=grid[blankpos+randMove];
+	grid[blankpos+randMove]=N*N;
+	blankpos = blankpos+randMove;
 	return 0;
 }
 
 function randomizePuzzle() {
-	for(var asdf = 0; asdf < 1; asdf++) {
+	for(var asdf = 0; asdf < 2; asdf++) {
 		makeRandomMove();
 	}
 }
@@ -126,15 +117,15 @@ function updateScores() {
 	document.getElementById("curscore").innerHTML = "<span>Moves:</span>" + moves;
 	if(isSolved()) {
 		var bestscore = parseInt(document.getElementById("bestscore").innerHTML.substr(18));
-		if(bestscore > curscore)
+		if(bestscore > curscore || bestscore == 0)
 			document.getElementById("bestscore").innerHTML = "<span>Best:</span>" + curscore;
 	}
 }
 
 $(document).ready(function(){
-	//alert("jquery works!");
-	//randomizePuzzle();
+	randomizePuzzle();
 	$(".block").click(function(){
+
 		var curblock = $(this);
 		switch( inBlankNeighbors(parseInt(curblock.text())) ) {
 			case 0:
@@ -156,7 +147,7 @@ $(document).ready(function(){
     	moves+=1;
     	updateScores();
     	if(isSolved()) {
-    		//alert("Looks like you won! I'll reset it now!");
+    		alert("Looks like you won! I'll reset it now!");
     		randomizePuzzle();
     		updateScores();
     		moves = 0;
