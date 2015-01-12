@@ -19,8 +19,9 @@ for(x = 0; x < N*N; x++) {
 function isSolved() {
 	for(x = 0; x < N*N; x++)
 	{
-		if(grid[x] != x+1)
+		if(grid[x] != x+1) {
 			return false;
+		}
 	}
 	return true;
 }
@@ -42,26 +43,82 @@ function inBlankNeighbors(toCheck) {
 	}}
 	if(blankpos-N >= 0) {
 		if(toCheck == grid[blankpos-N]) {
-			grid[blankpos-N]==N*N;
+			grid[blankpos-N]=N*N;
 			grid[blankpos]=toCheck;
 			blankpos = blankpos-N;
 			return 4;
 	}}
-	if( blankpos+1 < N*N && (blankpos+1)%5 != 0) {
+	if( blankpos+1 < N*N && (blankpos+1)%N != 0) {
 		if(toCheck == grid[blankpos+1]) {
-			grid[blankpos+1]==N*N;
+			grid[blankpos+1]=N*N;
 			grid[blankpos]=toCheck;
 			blankpos = blankpos + 1;
 			return 3;
 	}}
-	if( blankpos-1 >= 0 && (blankpos)%5 != 0) {
+	if( blankpos-1 >= 0 && (blankpos)%N != 0) {
 		if(toCheck == grid[blankpos-1]) {
-			grid[blankpos-1]==N*N;
+			grid[blankpos-1]=N*N;
 			grid[blankpos]=toCheck;
 			blankpos = blankpos - 1;
 			return 1;
 	}}
 	return 0;
+}
+
+//gives possible neighbors
+function listBlankNeighbors() {
+	var possMoves = [];
+	if(blankpos+N < N*N) {
+		possMoves.push(N);
+	}
+	if(blankpos-N >= 0) {
+		possMoves.push(-N);
+	}
+	if( blankpos+1 < N*N && (blankpos+1)%N != 0) {
+		possMoves.push(1);
+	}
+	if( blankpos-1 >= 0 && (blankpos)%N != 0) {
+		possMoves.push(-1);
+	}
+	return possMoves;
+}
+
+function makeRandomMove() {
+	var possMoves = listBlankNeighbors();
+	var randMove = possMoves[Math.floor(Math.random()*possMoves.length)];
+	var divToMove = $("#" + "b" + (blankpos+randMove).toString());
+
+	if(randMove == 1) {
+		divToMove.animate({left:'+=86px'},250);
+		grid[blankpos]=grid[blankpos+randMove];
+		grid[blankpos+randMove]=N*N;
+		blankpos = blankpos+randMove;
+	}
+	else if(randMove == -N) {
+		divToMove.animate({top:'-=86px'},250);
+  		grid[blankpos]=grid[blankpos+randMove];
+		grid[blankpos+randMove]=N*N;
+		blankpos = blankpos+randMove;
+	}
+	else if(randMove == -1) {
+		divToMove.animate({left:'-=86px'},250);
+  		grid[blankpos]=grid[blankpos+randMove];
+		grid[blankpos+randMove]=N*N;
+		blankpos = blankpos+randMove;
+	}
+	else if(randMove == N) {
+		divToMove.animate({top:'+=86px'},250);
+  		grid[blankpos]=grid[blankpos+randMove];
+		grid[blankpos+randMove]=N*N;
+		blankpos = blankpos+randMove;
+	}
+	return 0;
+}
+
+function randomizePuzzle() {
+	for(var asdf = 0; asdf < 1; asdf++) {
+		makeRandomMove();
+	}
 }
 
 function updateScores() {
@@ -75,32 +132,34 @@ function updateScores() {
 }
 
 $(document).ready(function(){
-  alert("jquery works!");
-  $(".block").click(function(){
-  	var curblock = $(this);
-  	switch( inBlankNeighbors(parseInt(curblock.text())) ) {
-  		case 0:
-  		moves-=1;
-  			break;
-  		case 1:
-  			curblock.animate({left:'+=86px'});
-  			break;
-  		case 2:
-  			curblock.animate({top:'-=86px'});
-  			break;
-  		case 3:
-  			curblock.animate({left:'-=86px'});
-  			break;
-  		case 4:
-  			curblock.animate({top:'+=86px'});
-  			break;
-  	}
-    //curblock.animate({left:'+=86px', top:'+=86px'});
-    moves+=1;
-    updateScores();
-    if(isSolved()) {
-    	//alert("looks like you won!");
-    	//$(".puzzlecontainer").empty();
-    }
+	//alert("jquery works!");
+	//randomizePuzzle();
+	$(".block").click(function(){
+		var curblock = $(this);
+		switch( inBlankNeighbors(parseInt(curblock.text())) ) {
+			case 0:
+				moves-=1;
+  				break;
+  			case 1:
+  				curblock.animate({left:'+=86px'});
+  				break;
+  			case 2:
+  				curblock.animate({top:'-=86px'});
+  				break;
+  			case 3:
+  				curblock.animate({left:'-=86px'});
+  				break;
+  			case 4:
+  				curblock.animate({top:'+=86px'});
+  				break;
+  		}
+    	moves+=1;
+    	updateScores();
+    	if(isSolved()) {
+    		//alert("Looks like you won! I'll reset it now!");
+    		randomizePuzzle();
+    		updateScores();
+    		moves = 0;
+    	}
   });
 });
